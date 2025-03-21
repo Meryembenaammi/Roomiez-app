@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        /* Copier les styles de loginuser.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* L'image dynamique de colocation d'étudiantes */
+            background: url('{{ url_for("static", filename="images/bg02.jpg") }}') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-blur: 5px;
+        }
+
+        .torn-paper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120px;
+            background: white;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding-left: 20px;
+            z-index: 1;
+        }
+
+        .torn-paper::after {
+            content: "";
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: white;
+            clip-path: polygon(0% 50%, 10% 70%, 20% 40%, 30% 65%, 40% 45%, 50% 70%, 60% 35%, 70% 60%, 80% 40%, 90% 70%, 100% 50%);
+        }
+
+        .back-button img {
+            width: 100px;
+            height: auto;
+            animation: moveImage 3s infinite alternate;
+        }
+
+        @keyframes moveImage {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(50px); }
+        }
+
+        .container {
+            width: 95%;
+            max-width: 500px;
+            padding: 50px 25px;
+            background: rgba(248, 221, 222, 0.7);
+            border-radius: 30px;
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+            margin-top: 120px;
+            z-index: 2;
+        }
+
+        /* Logo */
+.logo img {
+    width: 220px;
+    margin-bottom: 10px;
+    animation: moveLogo 3s infinite alternate;
+}
+
+/* Animation pour déplacer le logo de gauche à droite */
+@keyframes moveLogo {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(30px);
+    }
+}
+
+
+        h2 {
+            font-size: 40px;
+            color: #662d2d;
+            font-weight: bold;
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .input-container {
+            background: rgba(248, 221, 222, 0.7);
+            border-radius: 25px;
+            padding: 15px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-container .icon {
+            font-size: 24px;
+            padding: 0 12px;
+        }
+
+        .input-container input {
+            border: none;
+            background: transparent;
+            flex: 1;
+            outline: none;
+            font-size: 20px;
+            padding: 8px;
+        }
+
+        .btn {
+            background: #552727;
+            color: white;
+            font-size: 24px;
+            padding: 15px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 25px;
+            box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.4);
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #431f1f;
+        }
+
+        .signup {
+            margin-top: 25px;
+            display: block;
+            color: #662d2d;
+            font-size: 18px;
+            text-decoration: none;
+            font-weight: normal;
+        }
+
+        .signup:hover {
+            text-decoration: underline;
+        }
+
+        /* Ajout du style pour la photo de profil */
+        .photo-profil-container {
+            background: rgba(248, 221, 222, 0.7);
+            border-radius: 25px;
+            padding: 15px;
+            margin: 15px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .photo-profil-container input {
+            font-size: 20px;
+        }
+
+        .signup strong {
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="torn-paper">
+        <a href="{{ url_for('loginuser') }}" class="back-button">
+            <img src="static/images/retour.png" alt="Retour">
+        </a>
+    </div>
+
+    <div class="container">
+        <div class="logo">
+            <img src="static/images/logo.png" alt="Logo">
+        </div>
+        <h2>Sign Up</h2>
+         <form action="{{ url_for('signup') }}" method="POST">
+            <div class="input-container">
+                <span class="icon">👥</span>
+                <input type="text" name="username" placeholder="Username" required>
+            </div>
+            <div class="input-container">
+                <span class="icon">📧</span>
+                <input type="email" name="email" placeholder="Email" required>
+            </div>
+            <div class="input-container">
+                <span class="icon">🔒</span>
+                <input type="password" name="password" placeholder="Password" required>
+            </div>
+            <!-- Ajout de la photo de profil -->
+            <div class="photo-profil-container" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                <label for="photo" style="display: flex; align-items: center; cursor: pointer;">
+                    <img src="{{ url_for('static', filename='images/camera.png') }}" alt="Camera Icon" style="width: 40px; height: 40px; margin-right: 10px;">
+                    <span>Photo de profil</span>
+                </label>
+                <input type="file" name="photo" id="photo" accept="image/*" required style="display: none;" onchange="updateFileName()">
+                <label for="photo" style="cursor: pointer; color: #662d2d; font-size: 16px; text-decoration: underline;">Choisir un fichier</label>
+                <span id="file-name" style="margin-top: 10px; color: #662d2d;">Aucun fichier sélectionné</span>
+            </div>
+
+            <script>
+                function updateFileName() {
+                    var fileInput = document.getElementById('photo');
+                    var fileName = document.getElementById('file-name');
+                    if (fileInput.files.length > 0) {
+                        fileName.textContent = fileInput.files[0].name;
+                    } else {
+                        fileName.textContent = 'Aucun fichier sélectionné';
+                    }
+                }
+            </script>
+
+<button type="submit" class="btn">Sign Up</button>
+
+        </form>
+        <a href="{{ url_for('loginuser') }}" class="signup"><strong>Already have an account? Log In</strong></a>
+    </div>
+</body>
+</html>

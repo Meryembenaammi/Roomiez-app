@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Admin Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', filename='images/favicon.ico') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='fonts/font-awesome-4.7.0/css/font-awesome.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
+    <style>
+        body {
+            background: url('{{ url_for("static", filename="images/bg02.jpg") }}') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            position: relative;
+        }
+
+        .container-login100 {
+            background: rgba(255, 255, 255, 0.25); /* 0.25 pour une transparence légère */
+            backdrop-filter: blur(10px);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 600px; /* Largeur du cadre */
+            width: 100%;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .container-login100:hover {
+            transform: scale(1.02);
+        }
+
+        .login-logo {
+            width: 350px;
+            margin-bottom: 20px;
+            animation: moveUpDown 3s infinite; /* L'animation dure 3 secondes et se répète à l'infini */
+        }
+
+        @keyframes moveUpDown {
+            0% {
+                transform: translateY(0); /* Position initiale */
+            }
+            50% {
+                transform: translateY(-20px); /* Déplace le logo vers le haut */
+            }
+            100% {
+                transform: translateY(0); /* Retourne à la position initiale */
+            }
+        }
+
+        .login100-form-title {
+            font-size: 36px;
+            color: #a45a52; /* Couleur stylée du texte */
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: fadeInText 2s ease-out;
+        }
+
+        @keyframes fadeInText {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .input-group-text {
+            background: #552727;
+            color: white;
+            border: none;
+            border-radius: 25px 0 0 25px;
+            padding: 12px;
+        }
+
+        .input100 {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 0 25px 25px 0;
+            font-size: 18px;
+        }
+
+        .login100-form-btn {
+            background: #552727;
+            color: white;
+            font-size: 22px;
+            padding: 15px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .login100-form-btn:hover {
+            background: #431f1f;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            animation: moveUpDown 2s infinite;
+        }
+
+        .back-btn img {
+            width: 100px;
+            height: 100px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .back-btn:hover img {
+            transform: rotate(180deg); /* Effet de rotation sur l'image lors du survol */
+        }
+
+        /* Style pour l'icône de l'œil */
+        .eye-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #552727;
+        }
+    </style>
+</head>
+<body>
+    <!-- Bouton de retour avec redirection vers main.html -->
+    <button class="back-btn" onclick="window.location.href='{{ url_for('main') }}';">
+        <img src="{{ url_for('static', filename='images/retour.png') }}" alt="Retour">
+    </button>
+
+    <div class="container-login100">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="login-logo">
+        <form class="login100-form validate-form" action="/data" method="POST">
+            <span class="login100-form-title">Admin Login</span>
+            
+            <div class="input-group">
+                <span class="input-group-text"><i class="fa fa-user"></i></span>
+                <input class="input100" type="text" name="username" placeholder="Username" required>
+            </div>
+            
+            <div class="input-group">
+                <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                <input class="input100" id="password" type="password" name="pass" placeholder="Password" required>
+                <i class="fa fa-eye eye-icon" id="togglePassword"></i>
+            </div>
+            
+            <button class="login100-form-btn">Login</button>
+        </form>
+    </div>
+
+    <script>
+        const togglePassword = document.getElementById('togglePassword');
+        const password = document.getElementById('password');
+
+        togglePassword.addEventListener('click', function (e) {
+            // Toggle the type attribute
+            const type = password.type === 'password' ? 'text' : 'password';
+            password.type = type;
+
+            // Toggle the eye icon
+            this.classList.toggle('fa-eye-slash');
+        });
+    </script>
+</body>
+</html>

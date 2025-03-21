@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appartements à {{ ville_id }}</title>
+    <style>
+        /* Styles généraux */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #f3c6c6, #e6a8a8);
+            color: #333;
+            text-align: center;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Effet de déchirure sur les côtés */
+        .side-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50px;
+            height: 100%;
+            background-color: #f3c6c6;
+            clip-path: circle(30% at 50% 50%);
+            z-index: -1;
+        }
+
+        .side-effect.right {
+            right: 0;
+            left: auto;
+            background-color: #e6a8a8;
+            clip-path: circle(30% at 50% 50%);
+        }
+
+        /* Conteneur du cadre principal */
+        .main-container {
+            width: 80%;
+            max-width: 1200px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            animation: moveFrame 3s ease-out infinite; /* Animation du cadre */
+        }
+
+        /* Animation du cadre */
+        @keyframes moveFrame {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-10px) rotate(1deg);
+            }
+            50% {
+                transform: translateY(10px) rotate(-1deg);
+            }
+            75% {
+                transform: translateY(-5px) rotate(0deg);
+            }
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+        }
+
+        /* Logo centré dans le cadre */
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 180px;
+            object-fit: contain;
+            z-index: 10;
+        }
+
+        /* Titre */
+        h1 {
+            font-size: 2.5rem;
+            color: #662d2d;
+            margin-top: 150px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Conteneur des appartements */
+        .match-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .match {
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .match:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .match img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .match h2 {
+            font-size: 1.6rem;
+            color: #552727;
+            margin-bottom: 10px;
+        }
+
+        .match p {
+            font-size: 1rem;
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .match .adresse {
+            font-size: 0.9rem;
+            color: #777;
+            font-style: italic;
+        }
+
+        .no-matches {
+            font-size: 1.2rem;
+            color: #662d2d;
+            margin-top: 20px;
+        }
+
+        /* Bouton de retour avec animation */
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            z-index: 10;
+            animation: moveBackButton 2s ease-in-out infinite alternate; /* Animation du bouton */
+        }
+
+        .back-button img {
+            width: 80px;
+            height: 80px;
+        }
+
+        /* Animation du bouton de retour */
+        @keyframes moveBackButton {
+            0% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(10px);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            .match-container {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Effet de déchirure sur les côtés -->
+    <div class="side-effect"></div>
+    <div class="side-effect right"></div>
+
+    <!-- Conteneur principal -->
+    <div class="main-container">
+        <!-- Logo centré dans le cadre -->
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo">
+
+        <!-- Bouton de retour avec animation -->
+        <a href="{{ url_for('home') }}" class="back-button">
+            <img src="{{ url_for('static', filename='images/retour.png') }}" alt="Retour">
+        </a>
+
+        <!-- Titre -->
+        <h1>Appartements disponibles à {{ ville_id }}</h1>
+
+        <!-- Conteneur des matchs (appartements) -->
+        <div class="match-container">
+            {% if matches %}
+                {% for match in matches %}
+                    <div class="match">
+                        <!-- Affichage des photos de l'appartement -->
+                        {% for image in match.images %}
+                            <img src="{{ url_for('static', filename='images/' + image) }}" >
+                        {% endfor %}
+        
+                        <!-- Nom de l'appartement -->
+                        <h2>{{ match.nom }}</h2>
+        
+                        <!-- Description de l'appartement -->
+                        <p>{{ match.description }}</p>
+        
+                        <!-- Adresse de l'appartement -->
+                        <p class="adresse">{{ match.adresse }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="no-matches">Aucun appartement disponible pour cette ville.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

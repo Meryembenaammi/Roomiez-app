@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>Attendance Marked</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Background & Page Section */
+        #page::before {
+            content: "";
+            position: absolute;
+            background: url("{{url_for('static',filename='bg-test9.jpg')}}") no-repeat center center/cover;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        body {
+            font-family: 'Bree Serif', serif;
+            background: linear-gradient(to bottom, #f3c6c6, #e6a8a8);
+        }
+
+        .container {
+            text-align: center;
+            color: brown;
+            padding: 100px 20px;
+        }
+
+        h1 {
+            color: white;
+            font-size: 4rem;
+            font-family: 'Baloo Bhai', cursive;
+            margin-bottom: 20px;
+        }
+
+        .icon {
+            font-size: 6rem;
+            color: green;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite; /* Animation de saut infinie */
+        }
+
+        /* Définition de l'animation 'bounce' */
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0); /* Position de départ et de fin */
+            }
+            50% {
+                transform: translateY(-30px); /* L'icône monte de 30px au milieu de l'animation */
+            }
+        }
+
+        /* Button Styles */
+        .btn {
+            padding: 12px 40px;
+            font-size: 1.5rem;
+            border-radius: 10px;
+            background-color: #e07d7d;
+            color: white;
+            border: 2px solid white;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #c07a7a;
+        }
+    </style>
+</head>
+<body>
+
+    <section id="page">
+        <div class="container">
+            <!-- Icon + Message -->
+            <div class="icon">✅</div>
+            <h1><strong>Attendance has been marked successfully!</strong></h1>
+            <form action="/loginuser" method="GET">
+                <button class="btn btn-primary">Go to Login Page</button>
+            </form>            
+        </div>
+    </section>
+
+</body>
+</html>
+

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        /* Styles généraux */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    
+        body {
+            background: url('{{ url_for("static", filename="images/bg02.jpg") }}') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+    
+        .container {
+            width: 90%; /* Augmenter la largeur du cadre */
+            max-width: 700px; /* Augmenter la largeur maximale */
+            padding: 70px 40px; /* Augmenter l'espacement intérieur */
+            background: rgba(248, 221, 222, 0.7); /* Rose transparent */
+            border-radius: 30px;
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+            margin-top: 120px;
+            z-index: 2;
+        }
+    
+        h1 {
+            font-size: 48px; /* Agrandir la taille de la police du titre */
+            color: #662d2d;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+    
+        p {
+            font-size: 24px; /* Agrandir la taille du texte */
+            color: #333;
+            margin-bottom: 30px;
+        }
+    
+        .btn {
+            background: #552727;
+            color: white;
+            font-size: 28px; /* Agrandir la taille du texte du bouton */
+            padding: 20px;
+            border-radius: 30px; /* Augmenter la bordure du bouton */
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 30px; /* Augmenter l'espace au-dessus du bouton */
+            box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.4);
+            font-weight: bold;
+        }
+    
+        .btn:hover {
+            background: #431f1f;
+        }
+    
+        /* Retour avec image */
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 28px;
+            text-decoration: none;
+            color: transparent;
+            display: flex;
+            align-items: center;
+        }
+    
+        .back-button img {
+            width: 50px;
+            height: auto;
+            animation: moveImage 3s infinite alternate;
+        }
+    
+        /* Animation pour l'image du retour */
+        @keyframes moveImage {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(50px);
+            }
+        }
+    
+        /* Styles pour la carte */
+        #map {
+            width: 100%;
+            height: 60vh; /* Augmenter la hauteur de la carte */
+            margin-top: 30px; /* Augmenter l'espace au-dessus de la carte */
+            border-radius: 10px;
+        }
+    </style>
+    
+</head>
+<body>
+    <!-- Bouton retour avec image animée -->
+    <a href="{{ url_for('main') }}" class="back-button">
+        <img src="{{ url_for('static', filename='images/retour.png') }}" alt="Retour">
+    </a>
+
+    <div class="container">
+        <h1>Bienvenue sur Roumiez</h1>
+        <p>Découvrez les appartements qui vous correspondent. Cliquez ci-dessous pour voir plus de détails.</p>
+        <button class="btn">Let’s Find a Match</button>
+
+        <!-- Intégration de la carte OpenStreetMap -->
+        <div id="map"></div>
+    </div>
+
+    <!-- Script pour OpenStreetMap avec Leaflet.js -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Initialisation de la carte
+        var map = L.map('map').setView([33.5731, -7.5898], 6); // Zoom sur le Maroc
+
+        // Ajout des tuiles OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Créer une icône rouge personnalisée
+        var redIcon = L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png', // URL de l'icône rouge
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png', // Ombre du marqueur
+            iconSize: [25, 41], // Taille de l'icône
+            iconAnchor: [12, 41], // Point d'ancrage de l'icône
+            popupAnchor: [1, -34], // Point d'ancrage du popup
+            shadowSize: [41, 41] // Taille de l'ombre
+        });
+
+        // Liste des villes avec leurs coordonnées et un identifiant unique
+        var villes = [
+            { nom: "Casablanca", lat: 33.5731, lng: -7.5898, id: "casablanca" },
+            { nom: "Rabat", lat: 34.0209, lng: -6.8416, id: "rabat" },
+            { nom: "Marrakech", lat: 31.6295, lng: -7.9811, id: "marrakech" }
+        ];
+
+        // Ajouter un marqueur rouge pour chaque ville
+        villes.forEach(function(ville) {
+            var marker = L.marker([ville.lat, ville.lng], { icon: redIcon }).addTo(map)
+                .bindPopup(ville.nom) // Affiche le nom de la ville dans un popup
+                .on('click', function() {
+                    // Rediriger vers la page des matches pour cette ville
+                    window.location.href = `/matches/${ville.id}`;
+                });
+        });
+    </script>
+</body>
+</html>
