@@ -19,7 +19,7 @@ Roomiez est une application innovante facilitant la colocation entre jeunes fill
 
 
 ### Installation
-1. Clonez le projet :
+1. Clonez le projet  " git clone <URL_DU_REPO> "
 
 2. Installez les dépendances :
    ```sh
@@ -42,12 +42,11 @@ Roomiez est une application innovante facilitant la colocation entre jeunes fill
 roomiez/
 │── app2.py                # Application principale
 │── requirements.txt        # Dépendances
-│── Procfile               # Configuration Heroku
 │── static/                # Fichiers statiques (CSS, images...)
 │── templates/             # Templates HTML
 │── users.db               # Base de données des utilisateurs
 │── information.db         # Base de données des informations
-```
+
 
 ## Auteurs
 - Meryem Benaammi et son équipe
